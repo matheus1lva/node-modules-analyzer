@@ -14,17 +14,34 @@ const hasNMInside = (source) => {
   return readdirSync(source).some((dir) => dir.name === 'node_modules')
 }
 
+const getProblems = (directory) => {
+  let results = [];
+  directory.forEach((dir) => {
+    const dirName = dir.split('/').pop().toLowerCase();
+    const results2 = blacklisted.filter((bl) => {
+      return bl.includes(dirName);
+    })
+    results = [
+      ...results,
+      ...results2
+    ]
+  });
+  return results;
+}
+
+const cleanupDirName = (fullPath) => {
+  return fullPath.split('/').pop().toLowerCase();
+}
+
 const mountGraph = (rootDirs) => {
   const results = {};
   rootDirs.forEach((dir) => {
-    console.log(dir);
     const subDirectories = getDirectories(dir);
     if (!hasNMInside(dir)) {
-      const problems = subDirectories.map((sd) => {
-        const dirName = sd.split('/').pop();
-        return blacklisted.includes(dirName.toLowerCase());
-      });
-      results[dir] = problems;
+      const problems = getProblems(subDirectories);
+      if (problems.length) {
+        results[cleanupDirName(dir)] = problems;
+      }
     }
   });
   return results;
@@ -32,9 +49,9 @@ const mountGraph = (rootDirs) => {
 
 const run = () => {
   const pathNM = path.resolve(process.cwd(), 'node_modules/')
-
   const initialDirs = getDirectories(pathNM);
-  console.log(mountGraph(initialDirs));
+  const results = mountGraph(initialDirs);
+  console.log(results);
 }
 
 run()
