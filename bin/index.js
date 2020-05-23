@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-const run = require('../src');
+const run = require('../src')
 
-run();
+run()

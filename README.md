@@ -19,26 +19,24 @@
 
 # About
 
-node-modules-analyzer
+`node-modules-analyzer`
 
+Shows a report of all "defects" inside your node modules, which are folders and files that should have not been published by package authors!
 
 
 # Install
 
 ```bash
-yarn add node-modules-analyzer
+yarn add -D node-modules-analyzer
 ```
 
 # Usage
 
-```js
-// @TODO
-const {} = require('node-modules-analyzer')
+```bash
+npx node-modules-analyzer
 ```
 
-# Example
-
-<!-- TODO -->
+It will print out all the problems!
 
 # Contributing
 
