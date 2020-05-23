@@ -1,10 +1,13 @@
 {
   "name": "node-modules-analyzer",
-  "version": "0.0.0-development",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "engines": {
     "node": ">=10.0.0"
+  },
+  "bin": {
+    "nma": "./src/index.js"
   },
   "scripts": {
     "lint": "eslint . && yarn run lint:lockfile",
