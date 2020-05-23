@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const path = require('path')
 const { readdirSync } = require('fs')
 
@@ -54,4 +55,4 @@ const run = () => {
   console.log(results);
 }
 
-run()
+module.exports = run;
