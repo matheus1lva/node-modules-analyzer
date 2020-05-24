@@ -1,5 +1,6 @@
 const path = require('path')
-const { readdirSync } = require('fs')
+const { readdirSync } = require('fs');
+const { getFolderSize } = require('./analyzer');
 
 const blacklisted = ['examples', 'src', 'tests', 'docs', 'out']
 
@@ -29,15 +30,16 @@ const isNamespaceDependency = (source) => {
 }
 
 const getProblems = directory => {
-  let results = []
+  let results = [];
   directory.forEach(dir => {
     const dirName = dir
       .split('/')
       .pop()
       .toLowerCase()
     const results2 = blacklisted.filter(bl => {
-      return bl.includes(dirName)
+      return bl.includes(dirName);
     })
+    console.log(results2);
     results = [...results, ...results2]
   })
   return results
@@ -56,11 +58,13 @@ const cleanupDirName = fullPath => {
 const mountGraph = rootDirs => {
   const results = {}
   rootDirs.forEach(dir => {
-    const subDirectories = getDirectories(dir);
+    const subDirectories = getSubDirectories(dir);
     if (!hasNMInside(dir)) {
       const problems = getProblems(subDirectories)
       if (problems.length) {
-        results[cleanupDirName(dir)] = problems
+        results[cleanupDirName(dir)] = {
+          problems
+        }
       }
     }
 
@@ -77,7 +81,7 @@ const run = () => {
   const pathNM = path.resolve(process.cwd(), 'node_modules/')
   const initialDirs = getDirectories(pathNM)
   const results = mountGraph(initialDirs)
-  console.log(results);
+  // console.log(results);
 }
 
 module.exports = run
