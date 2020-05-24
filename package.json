@@ -1,6 +1,6 @@
 {
   "name": "node-modules-analyzer",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "index.js",
   "engines": {
@@ -41,7 +41,9 @@
     "type": "git",
     "url": "https://github.com/playma256/node-modules-analyzer.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "chalk": "^4.0.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
