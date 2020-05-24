@@ -43,11 +43,12 @@ const getFolderSize = (directoryPath) => {
       totalSize += fs.statSync(filePath).size
     })
 
-    return convertBytes(totalSize)
+    return totalSize
   }
-  return convertBytes(fs.statSync(directoryPath).size);
+  return fs.statSync(directoryPath).size;
 }
 
 module.exports = {
-  getFolderSize
+  getFolderSize,
+  convertBytes
 }

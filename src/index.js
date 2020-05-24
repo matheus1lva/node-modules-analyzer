@@ -1,6 +1,6 @@
 const path = require('path')
 const { readdirSync } = require('fs');
-const { getFolderSize } = require('./analyzer');
+const { getFolderSize, convertBytes } = require('./analyzer');
 
 const blacklisted = ['examples', 'src', 'tests', 'docs', 'out']
 
@@ -30,7 +30,10 @@ const isNamespaceDependency = (source) => {
 }
 
 const getProblems = directory => {
-  let results = [];
+  const results = {
+    problems: [],
+    totalSize: 0
+  };
   directory.forEach(dir => {
     const dirName = dir
       .split('/')
@@ -38,11 +41,14 @@ const getProblems = directory => {
       .toLowerCase()
     const results2 = blacklisted.filter(bl => {
       return bl.includes(dirName);
-    })
-    console.log(results2);
-    results = [...results, ...results2]
+    }).map((bl) => {
+      const size = getFolderSize(dir);
+      results.totalSize += parseInt(size);
+      return bl;
+    }).filter((i) => Boolean(i));
+    results.problems = [...results.problems, ...results2]
   })
-  return results
+  return results;
 }
 
 const cleanupDirName = fullPath => {
@@ -56,14 +62,18 @@ const cleanupDirName = fullPath => {
 }
 
 const mountGraph = rootDirs => {
-  const results = {}
+  const results = {
+    youCanSaveUpto: 0
+  }
   rootDirs.forEach(dir => {
     const subDirectories = getSubDirectories(dir);
     if (!hasNMInside(dir)) {
       const problems = getProblems(subDirectories)
-      if (problems.length) {
+      if (problems.problems.length) {
+        results.youCanSaveUpto += parseInt(problems.totalSize);
         results[cleanupDirName(dir)] = {
-          problems
+          problems: problems.problems,
+          savedUpSize: convertBytes(problems.totalSize)
         }
       }
     }
@@ -81,7 +91,7 @@ const run = () => {
   const pathNM = path.resolve(process.cwd(), 'node_modules/')
   const initialDirs = getDirectories(pathNM)
   const results = mountGraph(initialDirs)
-  // console.log(results);
+  console.log(JSON.stringify(results, null, 2));
 }
 
 module.exports = run
