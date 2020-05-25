@@ -23,8 +23,12 @@
 
 Shows a report of all "defects" inside your node modules, which are folders and files that should have not been published by package authors!
 
+You can get a small report of what are the problems and how much space can be saved up on each package and if you fix your entire `node_modules` folder!
 
-# Install
+![example]('./print.png)
+
+
+## Install
 
 ```bash
 yarn add -D node-modules-analyzer
@@ -36,7 +40,14 @@ yarn add -D node-modules-analyzer
 npx node-modules-analyzer
 ```
 
-It will print out all the problems!
+It will automatically get the node_modules that is on the current directory you are!
+
+if you run 
+```bash
+npx node-modules-analyzer --path ../node_modules
+```
+
+it will pick up the path you give it!
 
 # Contributing
 
