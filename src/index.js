@@ -40,7 +40,6 @@ const getProblems = (rootDir) => {
       .split('/')
       .pop()
       .toLowerCase();
-
     const problemsFound = blacklisted
       .filter((blackListed) => {
         return blackListed.includes(dirName);
@@ -52,7 +51,6 @@ const getProblems = (rootDir) => {
           return blackListed;
         }
       });
-
     subReport.problems = [...subReport.problems, ...problemsFound];
   });
   return subReport;
