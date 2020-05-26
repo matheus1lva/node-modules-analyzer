@@ -96,7 +96,7 @@ const mountGraph = (rootDir) => {
 };
 
 const run = (pathToNodeModules) => {
-  const pathNM = pathToNodeModules || path.resolve(process.cwd(), 'node_modules/');
+  const pathNM = path.resolve(pathToNodeModules) || path.resolve(process.cwd(), 'node_modules/');
   const initialDirs = getDirectories(pathNM);
   const results = mountGraph(initialDirs);
   defaultReporter(results);
