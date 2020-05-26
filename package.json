@@ -1,6 +1,6 @@
 {
   "name": "node-modules-analyzer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "engines": {
@@ -12,7 +12,9 @@
   "files": [
     "README.md",
     "src/",
-    "bin/"
+    "bin/",
+    "package.json",
+    "print.png"
   ],
   "scripts": {
     "lint": "eslint . && yarn run lint:lockfile",
