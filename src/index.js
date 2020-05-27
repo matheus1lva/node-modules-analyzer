@@ -8,7 +8,7 @@ const getDirectories = (source) =>
   readdirSync(source, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => {
-      return path.resolve(path.join(process.cwd(), 'node_modules'), dirent.name);
+      return path.resolve(path.join(source, dirent.name));
     });
 
 const getSubDirectories = (root) => {
@@ -26,7 +26,8 @@ const hasNMInside = (source) => {
 };
 
 const isNamespaceDependency = (source) => {
-  return (source || '').includes('@');
+  const currentFolder = source.split('/').pop();
+  return (currentFolder).includes('@');
 };
 
 const getProblems = (rootDir) => {
@@ -34,6 +35,10 @@ const getProblems = (rootDir) => {
     problems: [],
     totalSize: 0
   };
+
+  console.log('im inside rootProblems', {
+    rootDir
+  })
 
   rootDir.forEach((dir) => {
     const dirName = dir
@@ -87,6 +92,7 @@ const mountGraph = (rootDir) => {
 
     if (isNamespaceDependency(dir)) {
       const readTopRootDir = getSubDirectories(dir);
+      debugger;
       const subReport = mountGraph(readTopRootDir);
       Object.assign(results, subReport);
     }
