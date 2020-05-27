@@ -35,16 +35,11 @@ const getProblems = (name) => {
     totalSize: 0
   };
 
-  debugger;
-  if (!lstatSync(path.resolve(name)).isDirectory()) {
-    console.log('nao é nao')
-  }
-
   name.forEach((dir) => {
     const dirName = dir
       .split('/')
-      .pop()
-      .toLowerCase();
+      .pop();
+
     const problemsFound = blacklisted
       .filter((blackListed) => {
         return blackListed.includes(dirName);
@@ -92,7 +87,6 @@ const mountGraph = (rootDir) => {
 
     if (isNamespaceDependency(dir)) {
       const readTopRootDir = getSubDirectories(dir);
-      debugger;
       const subReport = mountGraph(readTopRootDir);
       Object.assign(results, subReport);
     }
