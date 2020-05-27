@@ -1,15 +1,14 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const getAllFiles = (dirPath) => {
+export function getAllFiles(dirPath: string): Array<string>{
   const files = fs.readdirSync(dirPath);
 
   let arrayOfFiles = [];
 
-  files.forEach(function(file) {
-    if (fs.statSync(dirPath + '/' + file).isDirectory()) {
-      arrayOfFiles = getAllFiles(dirPath + '/' + file, arrayOfFiles);
+  files.forEach((file) => {
+    if (fs.statSync(`${dirPath}/${file}`).isDirectory()) {
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}` );
     } else {
       arrayOfFiles.push(path.join(dirPath, file));
     }
@@ -18,14 +17,14 @@ const getAllFiles = (dirPath) => {
   return arrayOfFiles;
 };
 
-const convertBytes = (bytes) => {
+export function convertBytes(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
   if (bytes === 0) {
     return 'n/a';
   }
 
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
   if (i === 0) {
     return `${bytes} ${sizes[i]}`;
@@ -34,21 +33,16 @@ const convertBytes = (bytes) => {
   return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
 };
 
-const getFolderSize = (directoryPath) => {
+export function getFolderSize(directoryPath: string): number {
   if (fs.statSync(directoryPath).isDirectory()) {
     const arrayOfFiles = getAllFiles(directoryPath);
     let totalSize = 0;
 
-    arrayOfFiles.forEach(function(filePath) {
+    arrayOfFiles.forEach((filePath) => {
       totalSize += fs.statSync(filePath).size;
     });
 
     return totalSize;
   }
   return fs.statSync(directoryPath).size;
-};
-
-module.exports = {
-  getFolderSize,
-  convertBytes
 };
