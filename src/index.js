@@ -1,5 +1,5 @@
 const path = require('path');
-const { readdirSync } = require('fs');
+const { readdirSync, lstatSync } = require('fs');
 const { getFolderSize, convertBytes } = require('./sizeUtils');
 const blacklisted = require('./blacklisted');
 const { defaultReporter } = require('./reporters');
@@ -8,12 +8,11 @@ const getDirectories = (source) =>
   readdirSync(source, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => {
-      return path.resolve(path.join(process.cwd(), 'node_modules'), dirent.name);
+      return path.resolve(path.join(source, dirent.name));
     });
 
 const getSubDirectories = (root) => {
   return readdirSync(root, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
     .map((dirent) => {
       return path.join(root, dirent.name);
     });
@@ -26,20 +25,21 @@ const hasNMInside = (source) => {
 };
 
 const isNamespaceDependency = (source) => {
-  return (source || '').includes('@');
+  const currentFolder = source.split('/').pop();
+  return (currentFolder).includes('@');
 };
 
-const getProblems = (rootDir) => {
+const getProblems = (name) => {
   const subReport = {
     problems: [],
     totalSize: 0
   };
 
-  rootDir.forEach((dir) => {
+  name.forEach((dir) => {
     const dirName = dir
       .split('/')
-      .pop()
-      .toLowerCase();
+      .pop();
+
     const problemsFound = blacklisted
       .filter((blackListed) => {
         return blackListed.includes(dirName);
