@@ -1,5 +1,5 @@
 const path = require('path');
-const { readdirSync } = require('fs');
+const { readdirSync, lstatSync } = require('fs');
 const { getFolderSize, convertBytes } = require('./sizeUtils');
 const blacklisted = require('./blacklisted');
 const { defaultReporter } = require('./reporters');
@@ -13,7 +13,6 @@ const getDirectories = (source) =>
 
 const getSubDirectories = (root) => {
   return readdirSync(root, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
     .map((dirent) => {
       return path.join(root, dirent.name);
     });
@@ -30,17 +29,18 @@ const isNamespaceDependency = (source) => {
   return (currentFolder).includes('@');
 };
 
-const getProblems = (rootDir) => {
+const getProblems = (name) => {
   const subReport = {
     problems: [],
     totalSize: 0
   };
 
-  console.log('im inside rootProblems', {
-    rootDir
-  })
+  debugger;
+  if (!lstatSync(path.resolve(name)).isDirectory()) {
+    console.log('nao é nao')
+  }
 
-  rootDir.forEach((dir) => {
+  name.forEach((dir) => {
     const dirName = dir
       .split('/')
       .pop()
