@@ -2,7 +2,6 @@ import path from 'path';
 import { readdirSync, Dirent } from 'fs';
 import { getFolderSize, convertBytes } from './sizeUtils';
 import blacklisted from './blacklisted';
-import { defaultReporter } from './reporters';
 
 function getDirectories(source: string) {
   return readdirSync(source, { withFileTypes: true })
@@ -97,11 +96,8 @@ const mountGraph = (rootDir: string[]) => {
   return results;
 };
 
-function run(pathToNodeModules){
+export function analyze(pathToNodeModules){
   const pathNM = pathToNodeModules ? path.resolve(pathToNodeModules) : path.resolve(process.cwd(), 'node_modules/');
   const initialDirs = getDirectories(pathNM);
-  const results = mountGraph(initialDirs);
-  defaultReporter(results);
+  return mountGraph(initialDirs);
 };
-
-export default run;

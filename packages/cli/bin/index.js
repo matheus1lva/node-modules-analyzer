@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-tabs */
 
-const analyze = require('../dist/index.js').default;
+const { analyze } = require('../dist/index.js');
+const { defaultReporter } = require('../dist/reporters');
 const chalk = require('chalk');
 const options = require('yargs-parser')(process.argv.slice(2));
 
@@ -17,7 +18,8 @@ function run() {
     chalk.white(helpText());
   } else {
     const path = options.path;
-    analyze(path);
+    const results = analyze(path);
+    defaultReporter(results);
   }
 }
 
