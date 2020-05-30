@@ -1,5 +1,5 @@
 {
-  "name": "@nma/danger-plugin",
+  "name": "@nma/github-action",
   "version": "1.0.13",
   "description": "",
   "main": "index.js",
