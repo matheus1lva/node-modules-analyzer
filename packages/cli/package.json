@@ -1,0 +1,53 @@
+{
+  "name": "node-modules-analyzer",
+  "version": "1.0.13",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "bin": {
+    "node-modules-analyzer": "bin/index.js"
+  },
+  "files": [
+    "README.md",
+    "dist/",
+    "bin/",
+    "package.json",
+    "print.png"
+  ],
+  "scripts": {
+    "lint": "eslint . && yarn run lint:lockfile",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --config .prettierrc.js --write '**/*.js'",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage:view": "open-cli coverage/lcov-report/index.html",
+    "semantic-release": "semantic-release",
+    "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
+    "build": "babel src --out-dir dist/ --extensions '.ts'",
+    "prepublish": "yarn build"
+  },
+  "author": {
+    "name": "PlayMa256",
+    "email": "matheus.g.silva@hotmail.com",
+    "url": "https://github.com/playma256"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    ""
+  ],
+  "homepage": "https://github.com/playma256/node-modules-analyzer",
+  "bugs": {
+    "url": "https://github.com/playma256/node-modules-analyzer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/playma256/node-modules-analyzer.git"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "cli-highlight": "^2.1.4",
+    "yargs-parser": "^18.1.3"
+  }
+}

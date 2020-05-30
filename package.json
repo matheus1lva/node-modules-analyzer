@@ -1,32 +1,26 @@
 {
-  "name": "node-modules-analyzer",
+  "name": "node-modules-analyzer-core",
   "version": "1.0.13",
   "description": "",
-  "main": "index.js",
   "engines": {
     "node": ">=10.0.0"
   },
-  "bin": {
-    "node-modules-analyzer": "bin/index.js"
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   },
-  "files": [
-    "README.md",
-    "dist/",
-    "bin/",
-    "package.json",
-    "print.png"
-  ],
   "scripts": {
-    "lint": "eslint . && yarn run lint:lockfile",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --config .prettierrc.js --write '**/*.js'",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "coverage:view": "open-cli coverage/lcov-report/index.html",
-    "semantic-release": "semantic-release",
-    "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
-    "build": "babel src --out-dir dist/ --extensions '.ts'",
-    "prepublish": "yarn build"
+    "test:all": "yarn lint && yarn build && yarn type-check && yarn test",
+    "coverage": "yarn test --coverage",
+    "postcoverage": "open-cli coverage/lcov-report/index.html",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext js,ts,tsx",
+    "clean": "lerna exec -- yarn clean",
+    "build": "lerna exec --concurrency 1 -- yarn build",
+    "release": "lerna publish"
   },
   "author": {
     "name": "PlayMa256",
@@ -34,9 +28,6 @@
     "url": "https://github.com/playma256"
   },
   "license": "Apache-2.0",
-  "keywords": [
-    ""
-  ],
   "homepage": "https://github.com/playma256/node-modules-analyzer",
   "bugs": {
     "url": "https://github.com/playma256/node-modules-analyzer/issues"
@@ -44,11 +35,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/playma256/node-modules-analyzer.git"
-  },
-  "dependencies": {
-    "chalk": "^4.0.0",
-    "cli-highlight": "^2.1.4",
-    "yargs-parser": "^18.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.0",
@@ -61,7 +47,6 @@
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "cz-conventional-changelog": "^1.2.0",
     "eslint": "^6.0.1",
     "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.18.0",
@@ -72,6 +57,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^3.0.0",
     "jest": "^24.8.0",
+    "lerna": "^3.22.0",
     "lint-staged": "^9.2.0",
     "prettier": "^1.18.2",
     "typescript": "^3.9.3"
