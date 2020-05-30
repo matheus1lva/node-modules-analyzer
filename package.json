@@ -24,7 +24,8 @@
     "test:watch": "jest --watch",
     "coverage:view": "open-cli coverage/lcov-report/index.html",
     "semantic-release": "semantic-release",
-    "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn"
+    "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
+    "build": "babel src --out-dir dist/ --extensions '.ts'"
   },
   "author": {
     "name": "PlayMa256",
