@@ -101,3 +101,5 @@ export function analyze(pathToNodeModules){
   const initialDirs = getDirectories(pathNM);
   return mountGraph(initialDirs);
 };
+
+export * from './reporters';
