@@ -4,14 +4,15 @@ import { getFolderSize, convertBytes } from './sizeUtils';
 import blacklisted from './blacklisted';
 import { defaultReporter } from './reporters';
 
-const getDirectories = (source) =>
-  readdirSync(source, { withFileTypes: true })
+function getDirectories(source: string) {
+  return readdirSync(source, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => {
       return path.resolve(path.join(source, dirent.name));
     });
+  };
 
-function getSubDirectories(root: string){
+const getSubDirectories = (root: string) => {
   return readdirSync(root, { withFileTypes: true })
     .map((dirent) => {
       return path.join(root, dirent.name);
@@ -19,27 +20,28 @@ function getSubDirectories(root: string){
 };
 
 function hasNMInside(source: string) {
-  return readdirSync(source, { withFileTypes: true}).some((dir: Dirent) => {
+  // @ts-ignore
+  return readdirSync(source).some((dir: Dirent) => {
     return dir.name === 'node_modules';
   });
-}
-
-function isNamespaceDependency(source: string) {
-  return source.includes('@');
 };
 
-function getProblems(rootDir: Array<string>) {
+function isNamespaceDependency(source: string) {
+  const currentFolder = source.split('/').pop();
+  return (currentFolder).includes('@');
+};
+
+const getProblems = (name: string[]) => {
   const subReport = {
     problems: [],
     totalSize: 0
   };
 
-  rootDir.forEach((dir: string) => {
+  name.forEach((dir: string) => {
     const dirName = dir
       .split('/')
-      .pop()
-      .toLowerCase();
-    
+      .pop();
+
     const problemsFound = blacklisted
       .filter((blackListed) => {
         return blackListed.includes(dirName);
@@ -53,11 +55,10 @@ function getProblems(rootDir: Array<string>) {
       });
     subReport.problems = [...subReport.problems, ...problemsFound];
   });
-
   return subReport;
 };
 
-function cleanupDirName(fullPath: string) {
+const cleanupDirName = (fullPath) => {
   const splittedPath = fullPath.split('/');
   const packageName = splittedPath.pop();
   if (fullPath.includes('@')) {
@@ -67,7 +68,7 @@ function cleanupDirName(fullPath: string) {
   return packageName;
 };
 
-const mountGraph = (rootDir: Array<string>) => {
+const mountGraph = (rootDir: string[]) => {
   const results = {
     totalSaved: 0,
     perPackage: {}
@@ -96,7 +97,7 @@ const mountGraph = (rootDir: Array<string>) => {
   return results;
 };
 
-function run(pathToNodeModules: string){
+function run(pathToNodeModules){
   const pathNM = path.resolve(pathToNodeModules) || path.resolve(process.cwd(), 'node_modules/');
   const initialDirs = getDirectories(pathNM);
   const results = mountGraph(initialDirs);
