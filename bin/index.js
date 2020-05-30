@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-tabs */
 
-const analyze = require('../dist/');
+const analyze = require('../dist/index.js').default;
 const chalk = require('chalk');
 const options = require('yargs-parser')(process.argv.slice(2));
 
