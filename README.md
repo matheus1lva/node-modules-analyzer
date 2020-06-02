@@ -12,6 +12,9 @@ Many developers don't know how to properly publish their packages, given missing
 
 Let's rock it and make the ecosystem better!
 
+## Articles
+https://matheus-silva.now.sh/fixing-npm-size/
+
 
 # Contributing
 
