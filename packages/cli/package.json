@@ -48,6 +48,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "cli-highlight": "^2.1.4",
+    "find-all-package-files": "^1.0.1",
     "yargs-parser": "^18.1.3"
   }
 }

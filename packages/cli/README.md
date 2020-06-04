@@ -25,7 +25,7 @@ Shows a report of all "defects" inside your node modules, which are folders and 
 
 You can get a small report of what are the problems and how much space can be saved up on each package and if you fix your entire `node_modules` folder!
 
-![example](print.png)
+![example](./print.png)
 
 
 ## Install
