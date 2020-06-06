@@ -33,6 +33,7 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install 14
             nvm alias default 14
+            npm i -g yarn@latest
             yarn install
             yarn test
   analysis:
