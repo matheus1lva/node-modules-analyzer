@@ -2,6 +2,7 @@
   "name": "@nma/github-action",
   "version": "1.0.13",
   "description": "",
+  "private": true,
   "main": "index.js",
   "engines": {
     "node": ">=10.0.0"
