@@ -54,7 +54,6 @@ export default [
   'CHANGES',
   'changelog',
   'LICENSE.txt',
-  'LICENSE',
   'LICENSE-MIT',
   'LICENSE.BSD',
   'license',
