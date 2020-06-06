@@ -55,14 +55,17 @@ const getProblems = (name: string[]) => {
   return subReport;
 };
 
-const cleanupDirName = (fullPath) => {
+const cleanupDirName = (fullPath: string) => {
   const splittedPath = fullPath.split('/');
+  const rootPackage = splittedPath[splittedPath.length -3];
   const packageName = splittedPath.pop();
   if (fullPath.includes('@')) {
+    const parentOfScopped = splittedPath[splittedPath.length -5];
     const scope = splittedPath[splittedPath.length - 1];
-    return `${scope}/${packageName}`;
+    return `${parentOfScopped}/${scope}/${packageName}`;
   }
-  return packageName;
+  
+  return `${rootPackage}/${packageName}`;
 };
 
 const mountGraph = (rootDir: string[]) => {

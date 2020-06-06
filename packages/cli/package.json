@@ -26,6 +26,7 @@
     "semantic-release": "semantic-release",
     "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
     "build": "babel src --out-dir dist/ --extensions '.ts'",
+    "build:watch": "yarn build --watch",
     "prepublish": "yarn build"
   },
   "author": {
