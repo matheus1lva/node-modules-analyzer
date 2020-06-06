@@ -44,7 +44,7 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: NPM Rebuild
-          command: yarn install
+          command: npm i -g yarn && yarn install
       - run:
           name: Run linting
           command: yarn lint
