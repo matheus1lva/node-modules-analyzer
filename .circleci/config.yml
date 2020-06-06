@@ -2,7 +2,7 @@ version: 2
 jobs:
   dependency_cache:
     docker:
-      - image: circleci/node:lts
+      - image: rollupcabal/circleci-node-base:latest
     steps:
       - checkout
       - restore_cache:
