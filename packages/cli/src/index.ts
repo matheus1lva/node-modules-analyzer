@@ -2,6 +2,7 @@ import path from 'path';
 import { readdirSync, Dirent } from 'fs';
 import { getFolderSize, convertBytes } from './sizeUtils';
 import blacklisted from './blacklisted';
+import { getAllNodeModules } from './finders';
 
 function getDirectories(source: string) {
   return readdirSync(source, { withFileTypes: true })
@@ -9,13 +10,12 @@ function getDirectories(source: string) {
     .map((dirent) => {
       return path.resolve(path.join(source, dirent.name));
     });
-  };
+}
 
 const getSubDirectories = (root: string) => {
-  return readdirSync(root, { withFileTypes: true })
-    .map((dirent) => {
-      return path.join(root, dirent.name);
-    });
+  return readdirSync(root, { withFileTypes: true }).map((dirent) => {
+    return path.join(root, dirent.name);
+  });
 };
 
 function hasNMInside(source: string) {
@@ -23,12 +23,12 @@ function hasNMInside(source: string) {
   return readdirSync(source).some((dir: Dirent) => {
     return dir.name === 'node_modules';
   });
-};
+}
 
 function isNamespaceDependency(source: string) {
   const currentFolder = source.split('/').pop();
-  return (currentFolder).includes('@');
-};
+  return currentFolder.includes('@');
+}
 
 const getProblems = (name: string[]) => {
   const subReport = {
@@ -37,9 +37,7 @@ const getProblems = (name: string[]) => {
   };
 
   name.forEach((dir: string) => {
-    const dirName = dir
-      .split('/')
-      .pop();
+    const dirName = dir.split('/').pop();
 
     const problemsFound = blacklisted
       .filter((blackListed) => {
@@ -57,14 +55,17 @@ const getProblems = (name: string[]) => {
   return subReport;
 };
 
-const cleanupDirName = (fullPath) => {
+const cleanupDirName = (fullPath: string) => {
   const splittedPath = fullPath.split('/');
+  const rootPackage = splittedPath[splittedPath.length -3];
   const packageName = splittedPath.pop();
   if (fullPath.includes('@')) {
+    const parentOfScopped = splittedPath[splittedPath.length -5];
     const scope = splittedPath[splittedPath.length - 1];
-    return `${scope}/${packageName}`;
+    return `${parentOfScopped}/${scope}/${packageName}`;
   }
-  return packageName;
+  
+  return `${rootPackage}/${packageName}`;
 };
 
 const mountGraph = (rootDir: string[]) => {
@@ -96,10 +97,21 @@ const mountGraph = (rootDir: string[]) => {
   return results;
 };
 
-export function analyze(pathToNodeModules){
-  const pathNM = pathToNodeModules ? path.resolve(pathToNodeModules) : path.resolve(process.cwd(), 'node_modules/');
-  const initialDirs = getDirectories(pathNM);
-  return mountGraph(initialDirs);
-};
+export function analyze(pathToNodeModules) {
+  const pathNM = pathToNodeModules
+    ? [path.resolve(pathToNodeModules)]
+    : getAllNodeModules(process.cwd());
+  const result = {
+    perPackage: [],
+    totalSaved: 0
+  };
+  pathNM.forEach((nodePath) => {
+    const initialDirs = getDirectories(nodePath);
+    const { perPackage, totalSaved } = mountGraph(initialDirs);
+    result.perPackage = { ...result.perPackage, ...perPackage };
+    result.totalSaved += totalSaved;
+  });
+  return result;
+}
 
 export * from './reporters';

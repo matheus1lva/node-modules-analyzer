@@ -26,6 +26,7 @@
     "semantic-release": "semantic-release",
     "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
     "build": "babel src --out-dir dist/ --extensions '.ts'",
+    "build:watch": "yarn build --watch",
     "prepublish": "yarn build"
   },
   "author": {
@@ -48,6 +49,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "cli-highlight": "^2.1.4",
+    "find-all-package-files": "^1.0.1",
     "yargs-parser": "^18.1.3"
   }
 }

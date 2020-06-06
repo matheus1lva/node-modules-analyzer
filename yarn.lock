@@ -4144,6 +4144,11 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+find-all-package-files@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/find-all-package-files/-/find-all-package-files-1.0.1.tgz#4f988ba5ba808410f2ae70be2af170b53bc20633"
+  integrity sha512-hnZhea7rT3giv+dWsjbasSar1N4yeflcXESac5iavIK8QlBUa44n1d2+8SlJYDHYoHStvecBJJ3cS4EfUoLAwg==
+
 find-up@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-1.1.2.tgz#6b2e9822b1a2ce0a60ab64d610eccad53cb24d0f"

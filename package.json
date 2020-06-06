@@ -20,7 +20,8 @@
     "lint": "eslint . --ext js,ts,tsx",
     "clean": "lerna exec -- yarn clean",
     "build": "lerna exec --concurrency 1 -- yarn build",
-    "release": "lerna publish"
+    "release": "lerna publish",
+    "format": "prettier --write ."
   },
   "author": {
     "name": "PlayMa256",
