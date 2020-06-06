@@ -35,8 +35,8 @@ jobs:
             nvm alias default 14
             npm i -g yarn@latest
             cd ..
-            mv project node-modules-analyzer
-            cd node-modules-analyzer
+            mv project node-module-analyzer
+            cd node-module-analyzer
             yarn install && yarn lerna bootstrap
             yarn build
             yarn test
