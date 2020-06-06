@@ -45,9 +45,9 @@ jobs:
       - run:
           name: NPM Rebuild
           command: npm i -g yarn && yarn install
-      - run:
-          name: Run linting
-          command: yarn lint
+      # - run:
+      #     name: Run linting
+      #     command: yarn lint
 workflows:
   version: 2
   validate:
