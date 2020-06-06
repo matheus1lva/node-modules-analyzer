@@ -36,13 +36,13 @@ jobs:
             npm i -g yarn@latest
       - run:
           name: install dependencies
-          command: yarn install && yarn lerna bootstrap
+          command: npm i -g yarn@latest && yarn install && yarn lerna bootstrap
       - run:
           name: build
-          command: yarn build
+          command: npm i -g yarn@latest && yarn build
       - run:
           name: tests
-          command: yarn test
+          command: npm i -g yarn@latest && yarn test
   analysis:
     docker:
       - image: rollupcabal/circleci-node-base:latest
