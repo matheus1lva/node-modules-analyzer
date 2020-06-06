@@ -13,13 +13,13 @@ describe('should run test', () => {
         ],
         "saved": "6.2 MB",
       },
-      "node-module-analyzer/@babel/helpers1": {
+      "node-modules-analyzer/@babel/helpers1": {
         "problems":[
           "Jenkinsfile",
         ],
         "saved": "6.2 MB",
       },
-      "node-module-analyzer/@babel/helpers2": {
+      "node-modules-analyzer/@babel/helpers2": {
         "problems":[
           "Jenkinsfile",
         ],
