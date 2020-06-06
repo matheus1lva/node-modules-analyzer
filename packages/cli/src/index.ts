@@ -41,13 +41,13 @@ const getProblems = (name: string[]) => {
 
     const problemsFound = blacklisted
       .filter((blackListed) => {
-        return blackListed.includes(dirName);
+        return blackListed === dirName;
       })
-      .map((blackListed) => {
-        if (blackListed) {
+      .map((itemBlacklisted) => {
+        if (itemBlacklisted) {
           const size = getFolderSize(dir);
           subReport.totalSize += size;
-          return blackListed;
+          return itemBlacklisted;
         }
       });
     subReport.problems = [...subReport.problems, ...problemsFound];

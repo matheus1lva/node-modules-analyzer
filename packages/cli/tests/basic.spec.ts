@@ -7,25 +7,25 @@ describe('should run test', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      "@babel/helpers1": {
-        "problems": [
-          "Jenkinsfile"
+      "cli/other-dep": {
+        "problems":[
+          "AUTHORS",
         ],
-        "saved": "6.2 MB"
+        "saved": "6.2 MB",
       },
-      "@babel/helpers2": {
-        "problems": [
-          "Jenkinsfile"
+      "node-module-analyzer/@babel/helpers1": {
+        "problems":[
+          "Jenkinsfile",
         ],
-        "saved": "6.2 MB"
+        "saved": "6.2 MB",
       },
-      "other-dep": {
-        "problems": [
-          "AUTHORS"
+      "node-module-analyzer/@babel/helpers2": {
+        "problems":[
+          "Jenkinsfile",
         ],
-        "saved": "6.2 MB"
-      }
-    };
+        "saved": "6.2 MB",
+      },
+    }
     expect(results.perPackage).toEqual(expectedResult);
     expect(results.totalSaved).toEqual(19509168);
   })

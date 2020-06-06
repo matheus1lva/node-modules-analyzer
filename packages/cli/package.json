@@ -1,6 +1,6 @@
 {
   "name": "node-modules-analyzer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "./dist/index.js",
   "engines": {
@@ -27,7 +27,7 @@
     "lint:lockfile": "lockfile-lint --path yarn.lock --validate-https --allowed-hosts npm yarn",
     "build": "babel src --out-dir dist/ --extensions '.ts'",
     "build:watch": "yarn build --watch",
-    "prepublish": "yarn build"
+    "prepublish": "yarn test && yarn build"
   },
   "author": {
     "name": "PlayMa256",
