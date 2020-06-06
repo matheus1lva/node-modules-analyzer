@@ -24,7 +24,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: preflight
+          name: all checks
           command: |
             sudo apt-get update
             touch $BASH_ENV
@@ -34,15 +34,9 @@ jobs:
             nvm install 14
             nvm alias default 14
             npm i -g yarn@latest
-      - run:
-          name: install dependencies
-          command: npm i -g yarn@latest && yarn install && yarn lerna bootstrap
-      - run:
-          name: build
-          command: npm i -g yarn@latest && yarn build
-      - run:
-          name: tests
-          command: npm i -g yarn@latest && yarn test
+            yarn install && yarn lerna bootstrap
+            yarn build
+            yarn test
   analysis:
     docker:
       - image: rollupcabal/circleci-node-base:latest
