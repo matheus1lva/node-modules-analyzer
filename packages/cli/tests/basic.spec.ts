@@ -1,7 +1,7 @@
 import { analyze } from '../src';
 import path from 'path';
 
-const fixturePath = path.resolve(__dirname, '../test-node-modules');
+const fixturePath = path.resolve(module.filename, '../../test-node-modules');
 
 describe('should run test', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
@@ -13,13 +13,13 @@ describe('should run test', () => {
         ],
         "saved": "6.2 MB",
       },
-      "node-module-analyzer/@babel/helpers1": {
+      "node-modules-analyzer/@babel/helpers1": {
         "problems":[
           "Jenkinsfile",
         ],
         "saved": "6.2 MB",
       },
-      "node-module-analyzer/@babel/helpers2": {
+      "node-modules-analyzer/@babel/helpers2": {
         "problems":[
           "Jenkinsfile",
         ],

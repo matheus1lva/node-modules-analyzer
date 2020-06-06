@@ -1,0 +1,72 @@
+version: 2
+jobs:
+  dependency_cache:
+    docker:
+      - image: rollupcabal/circleci-node-base:latest
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Update NPM
+          command: npm install yarn@latest -g
+      - run:
+          name: Install Dependencies
+          command: yarn install && yarn lerna bootstrap
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+  node-v14-latest:
+    machine: true
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: all checks
+          command: |
+            sudo apt-get update
+            touch $BASH_ENV
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install 14
+            nvm alias default 14
+            npm i -g yarn@latest
+            cd ..
+            mv project node-modules-analyzer
+            cd node-modules-analyzer
+            yarn install && yarn lerna bootstrap
+            yarn build
+            yarn test
+  analysis:
+    docker:
+      - image: rollupcabal/circleci-node-base:latest
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: NPM Rebuild
+          command: npm i -g yarn && yarn install
+      # - run:
+      #     name: Run linting
+      #     command: yarn lint
+workflows:
+  version: 2
+  validate:
+    jobs:
+      - dependency_cache
+      - analysis:
+          requires:
+            - dependency_cache
+          filters:
+            tags:
+              only: /.*/
+      - node-v14-latest:
+          requires:
+            - analysis
+          filters:
+            tags:
+              only: /.*/
