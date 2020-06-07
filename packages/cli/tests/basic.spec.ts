@@ -7,6 +7,12 @@ describe('should run test', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
+      "cli/faulty-source": {
+        "problems": [
+          "src",
+        ],
+        "saved": "23 Bytes",
+      },
       "cli/other-dep": {
         "problems":[
           "AUTHORS",
@@ -27,6 +33,6 @@ describe('should run test', () => {
       },
     }
     expect(results.perPackage).toEqual(expectedResult);
-    expect(results.totalSaved).toEqual(19509168);
+    expect(results.totalSaved).toEqual(19509191);
   })
 })
