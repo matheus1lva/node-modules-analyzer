@@ -7,13 +7,13 @@ describe('should run test', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      "cli/faulty-source": {
+      "core/faulty-source": {
         "problems": [
           "src",
         ],
         "saved": "23 Bytes",
       },
-      "cli/other-dep": {
+      "core/other-dep": {
         "problems":[
           "AUTHORS",
         ],
