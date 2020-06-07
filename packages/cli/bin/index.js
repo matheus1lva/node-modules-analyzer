@@ -19,7 +19,7 @@ function run() {
   } else {
     const path = options.path;
     const results = analyze(path);
-    if(!results.problems.length || !results) {
+    if(!results || !results.problems || !results.problems.length) {
       process.exit(0);
     }
     defaultReporter(results);
