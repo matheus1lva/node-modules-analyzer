@@ -1,7 +1,0 @@
-{
-    "name": "falty-source",
-    "main": "dist/index.js",
-    "devDependencies": {
-        "flow-bin": "^0.3.1"
-    }
-}
