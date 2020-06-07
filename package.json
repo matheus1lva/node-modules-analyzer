@@ -19,7 +19,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ext js,ts,tsx",
     "clean": "lerna exec -- yarn clean",
-    "build": "lerna exec --concurrency 1 -- yarn build",
+    "build": "lerna run build --concurrency=1 --sort --stream",
     "release": "lerna publish",
     "format": "prettier --write .",
     "postinstall": "lerna bootstrap"
