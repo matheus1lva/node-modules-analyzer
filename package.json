@@ -20,8 +20,8 @@
     "lint": "eslint . --ext js,ts,tsx",
     "clean": "lerna exec -- yarn clean",
     "build": "lerna run build --concurrency=1 --sort --stream",
-    "release": "lerna publish",
     "format": "prettier --write .",
+    "release": "lerna publish from-package --yes --ignore-prepublish --dist-tag latest --no-verify-access",
     "postinstall": "lerna bootstrap"
   },
   "author": {
