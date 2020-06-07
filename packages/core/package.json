@@ -9,7 +9,6 @@
   "files": [
     "README.md",
     "dist/",
-    "bin/",
     "package.json",
     "print.png"
   ],
