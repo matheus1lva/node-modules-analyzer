@@ -8,7 +8,7 @@ module.exports = {
   extends: ['plugin:node/recommended'],
   rules: {
     semi: 'off',
-    'no-process-exit': 'warn',
+    'no-process-exit': 'off',
     'node/no-unsupported-features': 'off',
     'node/no-unpublished-require': 'off',
     'space-before-function-paren': 'off',
