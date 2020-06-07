@@ -1,13 +1,10 @@
 {
   "name": "@node-modules-analyzer/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
   "engines": {
     "node": ">=10.0.0"
-  },
-  "bin": {
-    "node-modules-analyzer": "bin/index.js"
   },
   "files": [
     "README.md",
