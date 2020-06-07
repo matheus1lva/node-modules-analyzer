@@ -21,7 +21,7 @@
     "clean": "lerna exec -- yarn clean",
     "build": "lerna run build --concurrency=1 --sort --stream",
     "format": "prettier --write .",
-    "release": "lerna publish from-package --yes --ignore-prepublish --dist-tag latest --no-verify-access",
+    "release": "lerna publish from-package --yes --dist-tag latest",
     "postinstall": "lerna bootstrap"
   },
   "author": {
