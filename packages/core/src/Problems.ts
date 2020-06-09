@@ -38,7 +38,7 @@ export class Problems {
       }catch (err) {
         // do nothing
       }
-      debugger;
+
       this.scanSrcFolder(packageJson, dir);
 
       const problemsFound = blacklisted
