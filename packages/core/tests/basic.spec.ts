@@ -7,32 +7,56 @@ describe('should run test', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      "core/faulty-source": {
-        "problems": [
+      "node-modules-analyzer/@emotion/cache": {
+        problems: [
+          "CHANGELOG.md",
           "src",
+          "tsconfig.json",
+          "tslint.json"
         ],
-        "saved": "23 Bytes",
+        saved: "11.5 KB"
+      },
+      "node-modules-analyzer/@emotion/core": {
+        problems: [
+          "CHANGELOG.md",
+          "src",
+          "tsconfig.json",
+          "tslint.json"
+        ],
+        saved: "21.4 KB"
+      },
+      "node-modules-analyzer/@emotion/css": {
+        problems: [
+          "CHANGELOG.md",
+          "src",
+          "tsconfig.json",
+          "tslint.json"
+        ],
+        saved: "2.6 KB"
+      },
+      "node-modules-analyzer/@emotion/hash": {
+        problems: [
+          "CHANGELOG.md",
+          "src",
+          "tsconfig.json",
+          "tslint.json"
+        ],
+        saved: "3.8 KB"
+      },
+      "core/faulty-source": {
+        problems: [
+          "src"
+         ],
+         saved: "23 Bytes"
       },
       "core/other-dep": {
-        "problems":[
-          "AUTHORS",
+        problems: [
+          "AUTHORS"
         ],
-        "saved": "6.2 MB",
-      },
-      "node-modules-analyzer/@babel/helpers1": {
-        "problems":[
-          "Jenkinsfile",
-        ],
-        "saved": "6.2 MB",
-      },
-      "node-modules-analyzer/@babel/helpers2": {
-        "problems":[
-          "Jenkinsfile",
-        ],
-        "saved": "6.2 MB",
-      },
-    }
+        saved: "6.2 MB"
+      }
+    };
     expect(results.perPackage).toEqual(expectedResult);
-    expect(results.totalSaved).toEqual(19509191);
+    expect(results.totalSaved).toEqual(6543379);
   })
 })
