@@ -4,9 +4,13 @@ import { convertBytes } from './sizeUtils';
 import { getAllNodeModules } from './finders';
 import { Problems } from './Problems';
 
+const storagePaths = ['.bin', 'cache', '.cache'];
+
 function getDirectories(source: string) {
   return readdirSync(source, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
+    .filter((dirent) => {
+      return dirent.isDirectory() && !storagePaths.includes(dirent.name);
+    })
     .map((dirent) => {
       return path.resolve(path.join(source, dirent.name));
     });
