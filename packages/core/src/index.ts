@@ -76,6 +76,7 @@ export function analyze(pathToNodeModules) {
   const pathNM = pathToNodeModules
     ? [path.resolve(pathToNodeModules)]
     : getAllNodeModules(process.cwd());
+
   const result = {
     perPackage: [],
     totalSaved: 0
