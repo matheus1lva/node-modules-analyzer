@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 dist/
 
+
+
 # Runtime data
 pids
 *.pid
@@ -61,6 +63,8 @@ typings/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+
+!packages/core/test-node-modules/.cache
 
 # next.js build output
 .next
