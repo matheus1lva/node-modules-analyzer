@@ -6,5 +6,3 @@ export const defaultReporter = ({ totalSaved, perPackage }) => {
   console.log(highlight(JSON.stringify(perPackage, null, 2), { language: 'json' }));
   console.log(chalk.white.bold(`Total to be saved: ${convertBytes(totalSaved)}`));
 };
-
-

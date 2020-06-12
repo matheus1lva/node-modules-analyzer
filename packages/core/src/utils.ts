@@ -1,5 +1,5 @@
 export function hasKey(object: object, key: string) {
-    return Object.keys(object || {}).some((keyValue) => keyValue === key);
+  return Object.keys(object || {}).some((keyValue) => keyValue === key);
 }
 
 export function deepMerge(target, source) {
@@ -9,7 +9,7 @@ export function deepMerge(target, source) {
     return source;
   }
 
-  Object.keys(source).forEach(key => {
+  Object.keys(source).forEach((key) => {
     const targetValue = target[key];
     const sourceValue = source[key];
 

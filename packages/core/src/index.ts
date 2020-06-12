@@ -41,11 +41,11 @@ const cleanupDirName = (fullPath: string) => {
   const packageName = splittedPath.pop();
   if (fullPath.includes('@') && !packageName.includes('@')) {
     let parentOfScopped = splittedPath[splittedPath.length - 2];
-    if(parentOfScopped === 'node_modules') {
+    if (parentOfScopped === 'node_modules') {
       parentOfScopped = splittedPath[splittedPath.length - 3];
     }
     // const scope = splittedPath[splittedPath.length - 1];
-    const findScope = splittedPath.find((value) => value.includes("@"));
+    const findScope = splittedPath.find((value) => value.includes('@'));
     return `${parentOfScopped}/${findScope}/${packageName}`;
   }
 
@@ -96,10 +96,9 @@ export function analyze(pathToNodeModules) {
     result.perPackage = {
       ...result.perPackage,
       ...perPackage
-     };
+    };
     result.totalSaved += totalSaved;
   });
-
 
   return result;
 }

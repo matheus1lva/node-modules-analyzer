@@ -34,34 +34,36 @@ export class Problems {
     let size = 0;
 
     const licenses = contentOfFolder.filter((itemName) => {
-      return itemName.toLowerCase().includes('license') || itemName.toLowerCase().includes('lisence')
+      return (
+        itemName.toLowerCase().includes('license') || itemName.toLowerCase().includes('lisence')
+      );
     });
 
-    if(licenses.length > 1) {
+    if (licenses.length > 1) {
       licenses.splice(0, 1);
       licenses.forEach((pathName) => {
         const fileName = pathName.split('/').pop();
         problems.push(fileName);
         size += getFolderSize(pathName);
-      })
+      });
     }
 
     const changelog = contentOfFolder.filter((itemName) => {
       return itemName.toLowerCase().includes('changelog');
     });
 
-    if(changelog.length > 1) {
+    if (changelog.length > 1) {
       changelog.splice(0, 1);
       changelog.forEach((pathName) => {
         const fileName = pathName.split('/').pop();
         problems.push(fileName);
         size += getFolderSize(pathName);
-      })
+      });
     }
     return {
       problems,
       size
-    }
+    };
   }
 
   scan(paths: Array<string>) {
@@ -69,10 +71,7 @@ export class Problems {
       return;
     }
 
-    const {
-      problems,
-      size: multipleInstancesSizes
-    } = this.lookForMultipleInstances(paths);
+    const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
 
     this.report.problems = [...this.report.problems, ...problems];
     this.report.totalSize += multipleInstancesSizes;
@@ -104,7 +103,7 @@ export class Problems {
 
       this.report.problems = [...this.report.problems, ...problemsFound];
 
-      debugger
+      debugger;
 
       if (lstatSync(dir).isDirectory() && !paths.includes('src')) {
         const folderContent = getSubDirectories(dir);
