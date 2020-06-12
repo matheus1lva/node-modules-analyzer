@@ -7,41 +7,84 @@ describe('SimpleApp', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
+     "simpleApp/@babel": {
+         "problems": [
+           "Jenkinsfile",
+           "Jenkinsfile",
+           "LICENSE",
+           "LICENSE-MIT",
+           "LICENSE.txt",
+         ],
+         "saved": "12.4 MB",
+       },
+       "simpleApp/@babel/helpers1": {
+         "problems": [
+           "Jenkinsfile",
+         ],
+         "saved": "6.2 MB",
+       },
+       "simpleApp/@babel/helpers2": {
+         "problems": [
+           "Jenkinsfile",
+         ],
+         "saved": "6.2 MB",
+       },
+       "simpleApp/@babel/multiple-licenses": {
+         "problems": [
+           "LICENSE",
+           "LICENSE-MIT",
+           "LICENSE.txt",
+         ],
+         "saved": "4 Bytes",
+       },
+       "simpleApp/@emotion": {
+         "problems": [
+           "src",
+           "tsconfig.json",
+           "tslint.json",
+           "src",
+           "tsconfig.json",
+           "tslint.json",
+           "src",
+           "tsconfig.json",
+           "tslint.json",
+           "src",
+           "tsconfig.json",
+           "tslint.json",
+         ],
+         "saved": "29.4 KB",
+       },
       "simpleApp/@emotion/cache": {
         "problems": [
-          "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        "saved": "11.5 KB"
+        "saved": "9.6 KB"
       },
       "simpleApp/@emotion/core": {
         "problems": [
-          "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        "saved": "21.4 KB"
+        "saved": "16.2 KB"
       },
       "simpleApp/@emotion/css": {
         "problems": [
-          "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        "saved": "2.6 KB"
+        "saved": "888 Bytes"
       },
       "simpleApp/@emotion/hash": {
         "problems": [
-          "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        "saved": "3.8 KB"
+        "saved": "2.7 KB"
       },
       "simpleApp/faulty-source": {
         "problems": [
@@ -57,6 +100,6 @@ describe('SimpleApp', () => {
       }
     };
     expect(results.perPackage).toEqual(expectedResult);
-    expect(results.totalSaved).toEqual(6543379);
+    expect(results.totalSaved).toEqual(6533216);
   })
 })
