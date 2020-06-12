@@ -83,3 +83,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+!packages/core/fixtures/**/node_modules

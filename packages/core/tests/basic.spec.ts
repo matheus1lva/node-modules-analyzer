@@ -1,59 +1,59 @@
 import { analyze } from '../src';
 import path from 'path';
 
-const fixturePath = path.resolve(module.filename, '../../test-node-modules');
+const fixturePath = path.resolve(module.filename, '../../fixtures/simpleApp');
 
-describe('should run test', () => {
+describe('SimpleApp', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      "node-modules-analyzer/@emotion/cache": {
-        problems: [
+      "simpleApp/@emotion/cache": {
+        "problems": [
           "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        saved: "11.5 KB"
+        "saved": "11.5 KB"
       },
-      "node-modules-analyzer/@emotion/core": {
-        problems: [
+      "simpleApp/@emotion/core": {
+        "problems": [
           "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        saved: "21.4 KB"
+        "saved": "21.4 KB"
       },
-      "node-modules-analyzer/@emotion/css": {
-        problems: [
+      "simpleApp/@emotion/css": {
+        "problems": [
           "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        saved: "2.6 KB"
+        "saved": "2.6 KB"
       },
-      "node-modules-analyzer/@emotion/hash": {
-        problems: [
+      "simpleApp/@emotion/hash": {
+        "problems": [
           "CHANGELOG.md",
           "src",
           "tsconfig.json",
           "tslint.json"
         ],
-        saved: "3.8 KB"
+        "saved": "3.8 KB"
       },
-      "core/faulty-source": {
-        problems: [
+      "simpleApp/faulty-source": {
+        "problems": [
           "src"
-         ],
-         saved: "23 Bytes"
+        ],
+        "saved": "23 Bytes"
       },
-      "core/other-dep": {
-        problems: [
+      "simpleApp/other-dep": {
+        "problems": [
           "AUTHORS"
         ],
-        saved: "6.2 MB"
+        "saved": "6.2 MB"
       }
     };
     expect(results.perPackage).toEqual(expectedResult);

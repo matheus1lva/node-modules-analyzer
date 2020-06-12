@@ -39,7 +39,10 @@ const cleanupDirName = (fullPath: string) => {
   const rootPackage = splittedPath[splittedPath.length - 3];
   const packageName = splittedPath.pop();
   if (fullPath.includes('@')) {
-    const parentOfScopped = splittedPath[splittedPath.length - 5];
+    let parentOfScopped = splittedPath[splittedPath.length - 2];
+    if(parentOfScopped === 'node_modules') {
+      parentOfScopped = splittedPath[splittedPath.length - 3];
+    }
     const scope = splittedPath[splittedPath.length - 1];
     return `${parentOfScopped}/${scope}/${packageName}`;
   }
@@ -60,7 +63,7 @@ const mountGraph = (rootDir: string[]) => {
       if (report.problems.length) {
         results.totalSaved += report.totalSize;
         results.perPackage[cleanupDirName(dir)] = {
-          problems: report.problems,
+          problems: Array.from(report.problems),
           saved: convertBytes(report.totalSize)
         };
       }
@@ -77,10 +80,8 @@ const mountGraph = (rootDir: string[]) => {
 };
 
 export function analyze(pathToNodeModules) {
-  const pathNM = pathToNodeModules
-    ? [path.resolve(pathToNodeModules)]
-    : getAllNodeModules(process.cwd());
-
+  const initialPath = pathToNodeModules || process.cwd();
+  const pathNM = getAllNodeModules(initialPath);
   const result = {
     perPackage: [],
     totalSaved: 0
@@ -88,10 +89,12 @@ export function analyze(pathToNodeModules) {
 
   pathNM.forEach((nodePath: string) => {
     const initialDirs = getDirectories(nodePath);
+    debugger;
     const { perPackage, totalSaved } = mountGraph(initialDirs);
     result.perPackage = { ...result.perPackage, ...perPackage };
     result.totalSaved += totalSaved;
   });
+
   return result;
 }
 

@@ -1,0 +1,9 @@
+{
+  "name": "server",
+  "dependencies": {
+    "@babel/preset-typescript": "1.1.1"
+  },
+  "devDependencies": {
+    "eslint": "1.1.1"
+  }
+}
