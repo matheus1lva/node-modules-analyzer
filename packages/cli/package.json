@@ -16,7 +16,7 @@
     "print.png"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "tsdx lint",
     "lint:fix": "eslint . --fix",
     "semantic-release": "semantic-release"
   },

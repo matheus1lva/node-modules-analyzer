@@ -1,21 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 
-export function getAllFiles(dirPath: string): Array<string>{
+export function getAllFiles(dirPath: string): Array<string> {
   const files = fs.readdirSync(dirPath);
 
   let arrayOfFiles = [];
 
   files.forEach((file) => {
     if (fs.statSync(`${dirPath}/${file}`).isDirectory()) {
-      arrayOfFiles = getAllFiles(`${dirPath}/${file}` );
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}`);
     } else {
       arrayOfFiles.push(path.join(dirPath, file));
     }
   });
 
   return arrayOfFiles;
-};
+}
 
 export function convertBytes(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -31,7 +31,7 @@ export function convertBytes(bytes: number): string {
   }
 
   return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
-};
+}
 
 export function getFolderSize(directoryPath: string): number {
   if (fs.statSync(directoryPath).isDirectory()) {
@@ -45,4 +45,4 @@ export function getFolderSize(directoryPath: string): number {
     return totalSize;
   }
   return fs.statSync(directoryPath).size;
-};
+}

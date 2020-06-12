@@ -18,7 +18,7 @@ function run() {
   } else {
     const path = options.path;
     const results = analyze(path);
-    if(!Object.keys(results.perPackage).length) {
+    if (!Object.keys(results.perPackage).length) {
       process.exit(0);
     }
     defaultReporter(results);

@@ -13,8 +13,6 @@
     "print.png"
   ],
   "scripts": {
-    "lint": "eslint . && yarn run lint:lockfile",
-    "lint:fix": "eslint . --fix",
     "format": "prettier --config .prettierrc.js --write '**/*.js'",
     "test": "jest",
     "test:watch": "jest --watch",
