@@ -7,10 +7,6 @@ describe('Monorepo', () => {
   it('should scan the whole tree without breaking anything and showing everything as expected', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      'app/@babel': {
-        problems: ['Jenkinsfile', 'Jenkinsfile'],
-        saved: '12.4 MB'
-      },
       'app/@babel/helpers1': {
         problems: ['Jenkinsfile'],
         saved: '6.2 MB'
@@ -18,23 +14,6 @@ describe('Monorepo', () => {
       'app/@babel/helpers2': {
         problems: ['Jenkinsfile'],
         saved: '6.2 MB'
-      },
-      'app/@emotion': {
-        problems: [
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json'
-        ],
-        saved: '29.4 KB'
       },
       'app/@emotion/cache': {
         problems: ['src', 'tsconfig.json', 'tslint.json'],

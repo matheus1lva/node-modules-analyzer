@@ -4,6 +4,7 @@ import { convertBytes } from './sizeUtils';
 import { getAllNodeModules } from './finders';
 import { Problems } from './Problems';
 import { deepMerge } from './utils';
+import { cleanupDirName } from './NameUtilities';
 
 const storagePaths = ['.bin', 'cache', '.cache'];
 
@@ -35,23 +36,6 @@ function isNamespaceDependency(source: string) {
   return currentFolder.includes('@');
 }
 
-const cleanupDirName = (fullPath: string) => {
-  const splittedPath = fullPath.split('/');
-  const rootPackage = splittedPath[splittedPath.length - 3];
-  const packageName = splittedPath.pop();
-  if (fullPath.includes('@') && !packageName.includes('@')) {
-    let parentOfScopped = splittedPath[splittedPath.length - 2];
-    if (parentOfScopped === 'node_modules') {
-      parentOfScopped = splittedPath[splittedPath.length - 3];
-    }
-    // const scope = splittedPath[splittedPath.length - 1];
-    const findScope = splittedPath.find((value) => value.includes('@'));
-    return `${parentOfScopped}/${findScope}/${packageName}`;
-  }
-
-  return `${rootPackage}/${packageName}`;
-};
-
 const mountGraph = (rootDir: string[]) => {
   let results = {
     totalSaved: 0,
@@ -60,7 +44,12 @@ const mountGraph = (rootDir: string[]) => {
 
   rootDir.forEach((dir: string) => {
     const subDirectories = getSubDirectories(dir);
-    if (!hasNMInside(dir)) {
+
+    if (isNamespaceDependency(dir)) {
+      const readTopRootDir = getSubDirectories(dir);
+      const subReport = mountGraph(readTopRootDir);
+      results = deepMerge(results, subReport);
+    }else if (!hasNMInside(dir)) {
       const { report } = new Problems(subDirectories);
       if (report.problems.length) {
         const cleanedUpName = cleanupDirName(dir);
@@ -72,11 +61,7 @@ const mountGraph = (rootDir: string[]) => {
       }
     }
 
-    if (isNamespaceDependency(dir)) {
-      const readTopRootDir = getSubDirectories(dir);
-      const subReport = mountGraph(readTopRootDir);
-      results = deepMerge(results, subReport);
-    }
+
   });
 
   return results;

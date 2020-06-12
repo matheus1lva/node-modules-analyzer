@@ -7,10 +7,6 @@ describe('SimpleApp', () => {
   it('should scan the whole tree without breaking anything and showing everything', () => {
     const results = analyze(fixturePath);
     const expectedResult = {
-      'simpleApp/@babel': {
-        problems: ['Jenkinsfile', 'Jenkinsfile', 'LICENSE', 'LICENSE-MIT', 'LICENSE.txt'],
-        saved: '12.4 MB'
-      },
       'simpleApp/@babel/helpers1': {
         problems: ['Jenkinsfile'],
         saved: '6.2 MB'
@@ -22,23 +18,6 @@ describe('SimpleApp', () => {
       'simpleApp/@babel/multiple-licenses': {
         problems: ['LICENSE', 'LICENSE-MIT', 'LICENSE.txt'],
         saved: '4 Bytes'
-      },
-      'simpleApp/@emotion': {
-        problems: [
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json',
-          'src',
-          'tsconfig.json',
-          'tslint.json'
-        ],
-        saved: '29.4 KB'
       },
       'simpleApp/@emotion/cache': {
         problems: ['src', 'tsconfig.json', 'tslint.json'],
