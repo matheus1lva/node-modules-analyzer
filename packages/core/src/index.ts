@@ -3,6 +3,7 @@ import { readdirSync, Dirent } from 'fs';
 import { convertBytes } from './sizeUtils';
 import { getAllNodeModules } from './finders';
 import { Problems } from './Problems';
+import { deepMerge } from './utils';
 
 const storagePaths = ['.bin', 'cache', '.cache'];
 
@@ -38,17 +39,21 @@ const cleanupDirName = (fullPath: string) => {
   const splittedPath = fullPath.split('/');
   const rootPackage = splittedPath[splittedPath.length - 3];
   const packageName = splittedPath.pop();
-  if (fullPath.includes('@')) {
-    const parentOfScopped = splittedPath[splittedPath.length - 5];
-    const scope = splittedPath[splittedPath.length - 1];
-    return `${parentOfScopped}/${scope}/${packageName}`;
+  if (fullPath.includes('@') && !packageName.includes('@')) {
+    let parentOfScopped = splittedPath[splittedPath.length - 2];
+    if(parentOfScopped === 'node_modules') {
+      parentOfScopped = splittedPath[splittedPath.length - 3];
+    }
+    // const scope = splittedPath[splittedPath.length - 1];
+    const findScope = splittedPath.find((value) => value.includes("@"));
+    return `${parentOfScopped}/${findScope}/${packageName}`;
   }
 
   return `${rootPackage}/${packageName}`;
 };
 
 const mountGraph = (rootDir: string[]) => {
-  const results = {
+  let results = {
     totalSaved: 0,
     perPackage: {}
   };
@@ -58,8 +63,9 @@ const mountGraph = (rootDir: string[]) => {
     if (!hasNMInside(dir)) {
       const { report } = new Problems(subDirectories);
       if (report.problems.length) {
+        const cleanedUpName = cleanupDirName(dir);
         results.totalSaved += report.totalSize;
-        results.perPackage[cleanupDirName(dir)] = {
+        results.perPackage[cleanedUpName] = {
           problems: report.problems,
           saved: convertBytes(report.totalSize)
         };
@@ -69,7 +75,7 @@ const mountGraph = (rootDir: string[]) => {
     if (isNamespaceDependency(dir)) {
       const readTopRootDir = getSubDirectories(dir);
       const subReport = mountGraph(readTopRootDir);
-      Object.assign(results, subReport);
+      results = deepMerge(results, subReport);
     }
   });
 
@@ -77,10 +83,8 @@ const mountGraph = (rootDir: string[]) => {
 };
 
 export function analyze(pathToNodeModules) {
-  const pathNM = pathToNodeModules
-    ? [path.resolve(pathToNodeModules)]
-    : getAllNodeModules(process.cwd());
-
+  const initialPath = pathToNodeModules || process.cwd();
+  const pathNM = getAllNodeModules(initialPath);
   const result = {
     perPackage: [],
     totalSaved: 0
@@ -89,9 +93,14 @@ export function analyze(pathToNodeModules) {
   pathNM.forEach((nodePath: string) => {
     const initialDirs = getDirectories(nodePath);
     const { perPackage, totalSaved } = mountGraph(initialDirs);
-    result.perPackage = { ...result.perPackage, ...perPackage };
+    result.perPackage = {
+      ...result.perPackage,
+      ...perPackage
+     };
     result.totalSaved += totalSaved;
   });
+
+
   return result;
 }
 
