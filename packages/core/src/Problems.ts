@@ -18,11 +18,11 @@ export class Problems {
     if (packageJson && path.includes('src')) {
       const mainField = packageJson?.main;
       const devDeps = packageJson?.devDependencies;
-      const hasFlow = hasKey(devDeps, 'flow-bin');
+      const flowBin = devDeps && devDeps['flow-bin'];
 
       // edge case for flow binaries, where the don't have any way
       // to get the type definitions as ts has
-      if (mainField?.includes('dist/') && !hasFlow) {
+      if (mainField?.includes('dist/') && !flowBin) {
         this.report.problems = [...this.report.problems, 'src'];
         this.report.totalSize += getFolderSize(path);
       }
@@ -73,7 +73,9 @@ export class Problems {
 
     const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
 
-    this.report.problems = [...this.report.problems, ...problems];
+    this.report.problems = [
+      ...new Set([...this.report.problems, ...problems])
+    ]
     this.report.totalSize += multipleInstancesSizes;
 
     paths.forEach((dir: string) => {
@@ -101,9 +103,9 @@ export class Problems {
           }
         });
 
-      this.report.problems = [...this.report.problems, ...problemsFound];
-
-      debugger;
+      this.report.problems = [
+        ...new Set([...this.report.problems, ...problemsFound])
+      ];
 
       if (lstatSync(dir).isDirectory() && !paths.includes('src')) {
         const folderContent = getSubDirectories(dir);

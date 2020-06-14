@@ -1,5 +1,5 @@
 import path from 'path';
-import { readdirSync, Dirent } from 'fs';
+import { readdirSync, Dirent, lstatSync } from 'fs';
 import { convertBytes } from './sizeUtils';
 import { getAllNodeModules } from './finders';
 import { Problems } from './Problems';
@@ -50,6 +50,13 @@ const mountGraph = (rootDir: string[]) => {
       const subReport = mountGraph(readTopRootDir);
       results = deepMerge(results, subReport);
     }else if (!hasNMInside(dir)) {
+
+      // prevent from scanning eslint folders!
+      // Some of the files inside eslint-* are actually useful
+      if(lstatSync(dir).isDirectory() && dir.includes('eslint')) {
+        return;
+      }
+
       const { report } = new Problems(subDirectories);
       if (report.problems.length) {
         const cleanedUpName = cleanupDirName(dir);
