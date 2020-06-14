@@ -73,7 +73,9 @@ export class Problems {
 
     const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
 
-    this.report.problems = [...this.report.problems, ...problems];
+    this.report.problems = [
+      ...new Set([...this.report.problems, ...problems])
+    ]
     this.report.totalSize += multipleInstancesSizes;
 
     paths.forEach((dir: string) => {
@@ -101,9 +103,9 @@ export class Problems {
           }
         });
 
-      this.report.problems = [...this.report.problems, ...problemsFound];
-
-      debugger;
+      this.report.problems = [
+        ...new Set([...this.report.problems, ...problemsFound])
+      ];
 
       if (lstatSync(dir).isDirectory() && !paths.includes('src')) {
         const folderContent = getSubDirectories(dir);
