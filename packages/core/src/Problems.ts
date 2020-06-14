@@ -22,12 +22,6 @@ export class Problems {
 
       // edge case for flow binaries, where the don't have any way
       // to get the type definitions as ts has
-      console.log({
-        name: packageJson['name'],
-        flowBin,
-        mainField,
-        path
-      })
       if (mainField?.includes('dist/') && !flowBin) {
         this.report.problems = [...this.report.problems, 'src'];
         this.report.totalSize += getFolderSize(path);
