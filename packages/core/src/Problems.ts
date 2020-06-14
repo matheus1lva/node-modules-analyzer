@@ -18,10 +18,17 @@ export class Problems {
     if (packageJson && path.includes('src')) {
       const mainField = packageJson?.main;
       const devDeps = packageJson?.devDependencies;
+      const flowBin = devDeps && devDeps['flow-bin'];
 
       // edge case for flow binaries, where the don't have any way
       // to get the type definitions as ts has
-      if (mainField?.includes('dist/') && devDeps && !devDeps['flow-bin'] && !path.includes('.flowconfig')) {
+      console.log({
+        name: packageJson['name'],
+        flowBin,
+        mainField,
+        path
+      })
+      if (mainField?.includes('dist/') && !flowBin) {
         this.report.problems = [...this.report.problems, 'src'];
         this.report.totalSize += getFolderSize(path);
       }
