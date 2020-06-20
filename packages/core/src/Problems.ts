@@ -1,12 +1,16 @@
 import { hasKey } from './utils';
 import { getFolderSize } from './sizeUtils';
-import blacklisted from './blacklisted';
+import { filesBlacklisted, foldersBlacklisted } from './blacklisted';
 import { lstatSync } from 'fs';
 import { getSubDirectories } from './index';
 
 export class Problems {
-  constructor(readonly paths: string[]) {
-    this.scan(this.paths);
+  constructor(readonly path: string) {
+    if (lstatSync(path).isDirectory()) {
+      this.scanFolders(path);
+    } else {
+      this.scanFiles(path);
+    }
   }
 
   report = {
@@ -66,20 +70,15 @@ export class Problems {
     };
   }
 
-  scan(paths: Array<string>) {
-    if (!paths || !paths.length) {
-      return;
-    }
+  scanFiles(paths: string) {
+    // const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
 
-    const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
+    // this.report.problems = [
+    //   ...new Set([...this.report.problems, ...problems])
+    // ]
+    // this.report.totalSize += multipleInstancesSizes;
 
-    this.report.problems = [
-      ...new Set([...this.report.problems, ...problems])
-    ]
-    this.report.totalSize += multipleInstancesSizes;
-
-    paths.forEach((dir: string) => {
-      const splittedFullPath = dir.split('/');
+      const splittedFullPath = paths.split('/');
       const dirName = splittedFullPath.pop();
       const fullpathWithoutFilename = splittedFullPath.join('/');
       let packageJson = null;
@@ -89,7 +88,7 @@ export class Problems {
         // do nothing
       }
 
-      this.scanSrcFolder(packageJson, dir);
+      // this.scanSrcFolder(packageJson, dir);
 
       const problemsFound = blacklisted
         .filter((blackListed) => {
@@ -97,7 +96,7 @@ export class Problems {
         })
         .map((itemBlacklisted) => {
           if (itemBlacklisted) {
-            const size = getFolderSize(dir);
+            const size = getFolderSize(paths);
             this.report.totalSize += size;
             return itemBlacklisted;
           }
@@ -106,11 +105,5 @@ export class Problems {
       this.report.problems = [
         ...new Set([...this.report.problems, ...problemsFound])
       ];
-
-      if (lstatSync(dir).isDirectory() && !paths.includes('src')) {
-        const folderContent = getSubDirectories(dir);
-        this.scan(folderContent);
-      }
-    });
   }
 }

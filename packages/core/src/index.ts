@@ -5,6 +5,7 @@ import { getAllNodeModules } from './finders';
 import { Problems } from './Problems';
 import { deepMerge } from './utils';
 import { cleanupDirName } from './NameUtilities';
+import Graph from './Graph';
 
 const storagePaths = ['.bin', 'cache', '.cache'];
 
@@ -36,39 +37,41 @@ function isNamespaceDependency(source: string) {
   return currentFolder.includes('@');
 }
 
+const graph = new Graph();
+
 const mountGraph = (rootDir: string[]) => {
   let results = {
     totalSaved: 0,
     perPackage: {}
   };
 
+  
   rootDir.forEach((dir: string) => {
-    const subDirectories = getSubDirectories(dir);
+    graph.walkGraph(dir);
+    //   const subDirectories = getSubDirectories(dir);
 
-    if (isNamespaceDependency(dir)) {
-      const readTopRootDir = getSubDirectories(dir);
-      const subReport = mountGraph(readTopRootDir);
-      results = deepMerge(results, subReport);
-    }else if (!hasNMInside(dir)) {
+  //   if (isNamespaceDependency(dir)) {
+  //     const readTopRootDir = getSubDirectories(dir);
+  //     const subReport = mountGraph(readTopRootDir);
+  //     results = deepMerge(results, subReport);
+  //   }else if (!hasNMInside(dir)) {
 
-      // prevent from scanning eslint folders!
-      // Some of the files inside eslint-* are actually useful
-      if(lstatSync(dir).isDirectory() && dir.includes('eslint')) {
-        return;
-      }
+  //     // prevent from scanning eslint folders!
+  //     // Some of the files inside eslint-* are actually useful
+  //     if(lstatSync(dir).isDirectory() && dir.includes('eslint')) {
+  //       return;
+  //     }
 
-      const { report } = new Problems(subDirectories);
-      if (report.problems.length) {
-        const cleanedUpName = cleanupDirName(dir);
-        results.totalSaved += report.totalSize;
-        results.perPackage[cleanedUpName] = {
-          problems: report.problems,
-          saved: convertBytes(report.totalSize)
-        };
-      }
-    }
-
-
+  //     const { report } = new Problems(subDirectories);
+  //     if (report.problems.length) {
+  //       const cleanedUpName = cleanupDirName(dir);
+  //       results.totalSaved += report.totalSize;
+  //       results.perPackage[cleanedUpName] = {
+  //         problems: report.problems,
+  //         saved: convertBytes(report.totalSize)
+  //       };
+  //     }
+  //   }
   });
 
   return results;
@@ -84,12 +87,12 @@ export function analyze(pathToNodeModules) {
 
   pathNM.forEach((nodePath: string) => {
     const initialDirs = getDirectories(nodePath);
-    const { perPackage, totalSaved } = mountGraph(initialDirs);
-    result.perPackage = {
-      ...result.perPackage,
-      ...perPackage
-    };
-    result.totalSaved += totalSaved;
+    mountGraph(initialDirs);
+    // result.perPackage = {
+    //   ...result.perPackage,
+    //   ...perPackage
+    // };
+    // result.totalSaved += totalSaved;
   });
 
   return result;

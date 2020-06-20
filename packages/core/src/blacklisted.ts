@@ -1,4 +1,4 @@
-export default [
+export const foldersBlacklisted = [
   '__tests__',
   'test',
   'tests',
@@ -13,9 +13,12 @@ export default [
   'example',
   'examples',
   'coverage',
-  '.nyc_output',
-  '.circleci',
   '.github',
+  '.circleci',
+  '.nyc_output'
+];
+
+export const filesBlacklisted = [
   'Jenkinsfile',
   'Makefile',
   'Gulpfile.js',
@@ -26,7 +29,6 @@ export default [
   '.gitattributes',
   '.editorconfig',
   '.eslintrc',
-  'eslint',
   '.eslintrc.js',
   '.eslintrc.json',
   '.eslintrc.yml',
