@@ -45,7 +45,7 @@ const mountGraph = (rootDir: string[]) => {
     perPackage: {}
   };
 
-  
+
   rootDir.forEach((dir: string) => {
     graph.walkGraph(dir);
     //   const subDirectories = getSubDirectories(dir);
@@ -88,6 +88,7 @@ export function analyze(pathToNodeModules) {
   pathNM.forEach((nodePath: string) => {
     const initialDirs = getDirectories(nodePath);
     mountGraph(initialDirs);
+    console.log(JSON.stringify(graph.report, null, 4));
     // result.perPackage = {
     //   ...result.perPackage,
     //   ...perPackage

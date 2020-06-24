@@ -70,6 +70,43 @@ export class Problems {
     };
   }
 
+  scanFolders(paths: string) {
+    // const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
+
+    // this.report.problems = [
+    //   ...new Set([...this.report.problems, ...problems])
+    // ]
+    // this.report.totalSize += multipleInstancesSizes;
+
+      const splittedFullPath = paths.split('/');
+      const dirName = splittedFullPath.pop();
+      const fullpathWithoutFilename = splittedFullPath.join('/');
+      let packageJson = null;
+      try {
+        packageJson = require(`${fullpathWithoutFilename}/package.json`);
+      } catch (err) {
+        // do nothing
+      }
+
+      // this.scanSrcFolder(packageJson, dir);
+
+      const problemsFound = foldersBlacklisted
+        .filter((blackListed) => {
+          return blackListed === dirName;
+        })
+        .map((itemBlacklisted) => {
+          if (itemBlacklisted) {
+            const size = getFolderSize(paths);
+            this.report.totalSize += size;
+            return itemBlacklisted;
+          }
+        });
+
+      this.report.problems = [
+        ...new Set([...this.report.problems, ...problemsFound])
+      ];
+  }
+
   scanFiles(paths: string) {
     // const { problems, size: multipleInstancesSizes } = this.lookForMultipleInstances(paths);
 
@@ -90,7 +127,7 @@ export class Problems {
 
       // this.scanSrcFolder(packageJson, dir);
 
-      const problemsFound = blacklisted
+      const problemsFound = filesBlacklisted
         .filter((blackListed) => {
           return blackListed === dirName;
         })
